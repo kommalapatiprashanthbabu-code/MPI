@@ -1,0 +1,46 @@
+<!-- <div class="page-bg">
+  <div class="qr-generator">
+    <h2>QR Code Generator</h2>
+
+    <input type="text" [(ngModel)]="qrText" placeholder="Enter text for QR">
+    <input type="text" [(ngModel)]="personName" placeholder="Enter person name">
+    <button (click)="generateQR()">Generate QR Code</button>
+
+    <div #qrcodeContainer class="qr-container"></div>
+    <div class="person-name">{{ personName }}</div>
+  </div>
+</div> -->
+<!-- <button
+  (click)="generateQR()"
+  style="padding: 8px 16px; margin-bottom: 12px; cursor: pointer;"
+>
+  Generate QR
+</button>
+
+<br />
+
+<canvas #qrCanvas></canvas> -->
+<div class="page-bg">
+    <div class="qr-generator">
+        <h2>QR Code Generator</h2>
+        <button (click)="generateQR()" style="padding: 8px 16px; cursor: pointer; margin-right: 8px;">
+            Generate QR
+        </button>
+
+        <button (click)="downloadSVG()" [disabled]="!qrGenerated"
+            style="padding: 8px 16px; cursor: pointer; margin-right: 8px;">
+            Download SVG
+        </button>
+
+        <button (click)="downloadPNG()" [disabled]="!qrGenerated" style="padding: 8px 16px; cursor: pointer;">
+            Download PNG
+        </button>
+        <button [routerLink]="['/members']" routerLinkActive="router-link-active"  style="padding: 8px 16px; cursor: pointer;">
+            Members List
+        </button>
+        <br /><br />
+
+        <div #qrContainer></div>
+
+    </div>
+</div>

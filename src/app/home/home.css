@@ -1,0 +1,54 @@
+/* .qr-generator {
+  text-align: center;
+  margin: 30px;
+  font-family: Arial, sans-serif;
+}
+
+input {
+  padding: 8px;
+  margin: 5px;
+  font-size: 16px;
+}
+
+button {
+  padding: 8px 15px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.qr-container {
+  display: inline-block;
+  margin-top: 20px;
+  position: relative;
+}
+
+.person-name {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 18px;
+} */
+.page-bg {
+  min-height:90vh;
+  background-image: url('/assets/images/black-bg-mpi.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qr-container {
+  display: inline-block;
+  padding: 20px;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+canvas {
+  display: block;
+}
+
+
+

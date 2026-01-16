@@ -1,0 +1,122 @@
+
+
+        /* --- Header / Branding (User Provided) --- */
+        header {
+            background-color: #000000;
+            color: white;
+            padding: 0.8rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+        }
+
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .brand-logo {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .brand-title {
+            font-family: var(--font-heading);
+            font-size: 0.95rem;
+            font-weight: 500;
+            opacity: 0.95;
+            border-left: 1px solid #444;
+            padding-left: 1.5rem;
+        }
+        
+        .header-right {
+            font-family: var(--font-body);
+            font-size: 0.85rem; 
+            opacity: 0.8;
+            font-weight: 300;
+            text-align: right;
+        }
+        /* Sidebar */
+.side-menu {
+  position: fixed;
+  top: 60px; /* adjust if header height changes */
+  left: -220px;
+  width: 220px;
+  height: calc(100vh - 60px);
+  background-color: #000000;
+  transition: left 0.3s ease;
+  z-index: 1000;
+}
+
+/* Show menu on hover */
+.side-menu:hover {
+  left: 0;
+}
+
+/* Optional: trigger area */
+.side-menu::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -20px;
+  width: 20px;
+  height: 100%;
+}
+
+/* Menu items */
+.side-menu ul {
+  list-style: none;
+  padding: 16px 0;
+  margin: 0;
+}
+
+/* Menu item */
+.side-menu li {
+  margin: 4px 12px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+/* Link */
+.side-menu a {
+  display: block;
+  padding: 12px 16px;
+  color: #e5e7eb;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Hover */
+.side-menu li:hover {
+  background: #1e293b;
+}
+
+/* Active menu item */
+.side-menu li.active {
+  background: #2563eb; /* blue */
+}
+
+/* Active link text */
+.side-menu li.active a {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Optional left indicator */
+.side-menu li.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 4px;
+  background: #60a5fa;
+  border-radius: 0 4px 4px 0;
+}

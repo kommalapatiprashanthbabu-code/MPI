@@ -1,0 +1,32 @@
+
+<div class="scanner-card">
+  <div class="scanner-header">
+    <i class="bi bi-qr-code-scan scanner-icon"></i>
+    <h1 style="color: black;">Scan QR Code</h1>
+  </div>
+
+  <!-- Camera Selector -->
+  <div class="camera-select" *ngIf="cameras.length > 0">
+    <label for="camera" style="color: black;">Select Camera:</label>
+    <select id="camera" class="form-select form-select-lg" (change)="onCameraChange($event)">
+      <option *ngFor="let cam of cameras" [value]="cam.id">
+        {{ cam.label }}
+      </option>
+    </select>
+  </div>
+
+  <!-- QR Reader -->
+  <div id="qr-reader" class="qr-reader"></div>
+
+  <!-- Scanned Result -->
+  <div class="output" *ngIf="scannedResult">
+    <h3>Scanned UID</h3>
+    <p class="result-text">{{ scannedResult }}</p>
+  </div>
+
+  <!-- Member Info -->
+  <div class="output" *ngIf="memberInfo">
+    <h3>Member Info</h3>
+    <pre class="result-text">{{ memberInfo | json }}</pre>
+  </div>
+</div>
