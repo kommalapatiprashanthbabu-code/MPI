@@ -13,7 +13,7 @@ export class VisitorService {
   constructor(private http: HttpClient) {}
 
 getVisitors() {
-  return this.http.get<Visitor[]>('http://localhost:8080/api/visitors');
+  return this.http.get<Visitor[]>('localhost:8080/api/users?page=0&size=400');
 }
 
  deleteVisitor(id: number): Observable<void> {

@@ -1,3 +1,6 @@
+.scanner-page{
+  background-color: radial-gradient(circle at top left, #cfc177, #000000, #cfc177);;
+}
 .scanner-card {
     max-width: 600px; /* bigger card */
     margin: 30px auto;
@@ -71,3 +74,39 @@
     color: #212529;
     word-break: break-word;
   }
+  .modal-backdrop-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-custom {
+  background: #fff;
+  width: 700px;
+  border-radius: 6px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.modal-header,
+.modal-footer {
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+  border-top: none;
+  text-align: right;
+}
+
+.modal-body {
+  padding: 1rem;
+  max-height: 70vh;
+  overflow-y: auto;
+}

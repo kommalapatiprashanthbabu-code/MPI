@@ -1,13 +1,12 @@
-import { Component, OnInit, OnDestroy, NgZone, ChangeDetectorRef } from '@angular/core';
-import { Html5Qrcode, Html5QrcodeCameraScanConfig } from 'html5-qrcode';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Html5Qrcode } from 'html5-qrcode';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-scanner',
   standalone: true,
-  imports:[CommonModule,RouterLink],
+  imports:[CommonModule],
   templateUrl: './scanner.html',
   styleUrls: ['./scanner.css'],
 })
@@ -19,6 +18,7 @@ export class Scanner implements OnInit, OnDestroy {
 
   scannedResult: string | null = null;
   memberInfo: any;
+  showDetailsModal: boolean =false;
 
   constructor(private http: HttpClient,private cdr: ChangeDetectorRef) {}
 
@@ -64,21 +64,38 @@ async onCameraChange(event: Event) {
 
 
 
-  onScanSuccess(text: string) {
-    this.scannedResult = text;
-    console.log('result',this.scannedResult)
+onScanSuccess(text: string) {
+  this.scannedResult = text;
+  this.memberInfo = { name: 'John Doe', id: text };
 
-    this.html5QrCode.stop();
+  this.showDetailsModal = true;
+  this.cdr.detectChanges(); // 👈 force update
 
-    // this.http.get(`http://localhost:8080/api/members/${text}`).subscribe({
-    //   next: res => (this.memberInfo = res),
-    //   error: err => console.error(err),
-    // });
-  }
+  this.html5QrCode.stop();
+}
 
-  ngOnDestroy() {
-    if (this.html5QrCode?.isScanning) {
-      this.html5QrCode.stop();
+
+async ngOnDestroy() {
+  await this.stopScanner();
+}
+private async stopScanner() {
+  if (this.html5QrCode) {
+    try {
+      if (this.html5QrCode.isScanning) {
+        await this.html5QrCode.stop();
+      }
+      await this.html5QrCode.clear(); // 🔥 VERY IMPORTANT
+    } catch (err) {
+      console.warn('Error stopping scanner', err);
     }
+  }
+}
+
+  approve(){
+    this.showDetailsModal=false;
+  }
+  closeDetailsModal(){
+    this.showDetailsModal=false;
+    this.startScanner();
   }
 }
