@@ -1,30 +1,81 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-import { Visitor } from '../interfaces/visitors.model';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { PageResponse, Visitor } from '../interfaces/visitors.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VisitorService {
 
-  private baseUrl = 'http://localhost:8080/api/visitors';
+  private baseUrl = 'http://localhost:8080/api/users?page=0&size=500';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private toastr: ToastrService // inject toastr
+  ) {}
 
-getVisitors() {
-  return this.http.get<Visitor[]>('localhost:8080/api/users?page=0&size=400');
-}
-
- deleteVisitor(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  /** Get all visitors */
+  getVisitors(): Observable<PageResponse<Visitor>> {
+    return this.http.get<PageResponse<Visitor>>(this.baseUrl)
+      .pipe(catchError(err => this.handleError(err)));
   }
 
-  addVisitor(visitor: Visitor): Observable<Visitor> {
-    return this.http.post<Visitor>(this.baseUrl, visitor);
+  /** Get attended visitors */
+  getAttendedVisitors(): Observable<PageResponse<Visitor>> {
+    return this.http.get<PageResponse<Visitor>>(
+      'http://localhost:8080/api/users-attendance/list?page=0&size=500'
+    ).pipe(catchError(err => this.handleError(err)));
   }
 
-  updateVisitor(visitor: Visitor): Observable<Visitor> {
-    return this.http.put<Visitor>(`${this.baseUrl}/${visitor.registrationId}`, visitor);
+  /** Delete a visitor */
+  deleteVisitor(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`)
+      .pipe(catchError(err => this.handleError(err)));
+  }
+
+  /** Add visitor */
+  addVisitor(visitor: any): Observable<any> {
+    return this.http.post<any>('http://localhost:8080/api/users', visitor)
+      .pipe(catchError(err => this.handleError(err)));
+  }
+
+  /** Update visitor */
+  updateVisitor(visitor: any): Observable<any> {
+    return this.http.patch<any>('http://localhost:8080/api/users/update-user', visitor)
+      .pipe(catchError(err => this.handleError(err)));
+  }
+
+  /** Get visitor by registrationId */
+  getVisitorById(registrationId: string): Observable<Visitor> {
+    return this.http.get<Visitor>(`${this.baseUrl.replace('?page=0&size=500','')}/${registrationId}`)
+      .pipe(catchError(err => this.handleError(err)));
+  }
+
+  /** Approve visitor */
+  approveVisitor(req: any): Observable<any> {
+    return this.http.post<any>('http://localhost:8080/api/users-attendance', req)
+      .pipe(catchError(err => this.handleError(err)));
+  }
+
+  /** Centralized error handler + Toastr */
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    let message = 'An unknown error occurred';
+
+    if (error.error?.message) {
+      message = error.error.message; // backend message
+    } else if (error.status === 404) {
+      message = 'Resource not found';
+    } else if (error.status === 400) {
+      message = 'Bad request';
+    } else if (error.status === 500) {
+      message = 'Server error';
+    }
+
+    // Show toast automatically
+    this.toastr.error(message, 'Error');
+    return throwError(() => new Error(message));
   }
 }

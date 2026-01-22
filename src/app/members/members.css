@@ -44,7 +44,7 @@
 
 .modal-custom {
   background: #fff;
-  width: 700px;
+  width: 55%;
   border-radius: 6px;
   box-shadow: 0 5px 20px rgba(0,0,0,0.3);
 }
@@ -61,8 +61,8 @@
 }
 
 .modal-body {
-  padding: 1rem;
-  max-height: 70vh;
+  padding: 2rem;
+  max-height: 75vh;
   overflow-y: auto;
 }
 /* Common transparent action buttons */

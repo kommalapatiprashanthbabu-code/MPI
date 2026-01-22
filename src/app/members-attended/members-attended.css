@@ -1,0 +1,30 @@
+.table {
+  background: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Header */
+.table thead th {
+  background:rgb(255 172 0 / 40%) !important;
+  color: #ffffff;
+}
+
+/* Cells */
+.table td {
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Hover */
+.table-hover tbody tr:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+}
+
+/* Borders */
+.table-bordered th,
+.table-bordered td {
+  border-color: rgba(255, 255, 255, 0.25);
+}

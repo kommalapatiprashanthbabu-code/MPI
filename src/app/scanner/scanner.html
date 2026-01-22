@@ -5,6 +5,14 @@
       <i class="bi bi-qr-code-scan scanner-icon"></i>
       <h1 style="color: black;">Scan QR Code</h1>
     </div>
+<input
+  #qrInput
+  type="text"
+  class="form-control"
+  placeholder="Scan QR Code"
+  autofocus
+  (keydown.enter)="onQrScanned(qrInput.value); qrInput.value='';"
+/>
 
     <!-- Camera Selector -->
     <div class="camera-select" *ngIf="cameras.length > 0">
@@ -28,25 +36,75 @@
             </h5>
             <button class="btn-close btn-close-white" (click)="closeDetailsModal()"></button>
         </div>
-        <div class="modal-body">
-             <!-- Scanned Result -->
-  <div class="output" *ngIf="scannedResult">
-    <h3>Scanned UID</h3>
-    <p class="result-text">{{ scannedResult }}</p>
+       <div class="modal-body">
+
+  <!-- Scanned Result -->
+  <div class="mb-3">
+    <strong>Scanned UID:</strong>
+    <div class="text-primary">{{ scannedResult }}</div>
   </div>
 
-  <!-- Member Info -->
-  <div class="output" *ngIf="memberInfo">
-    <h3>Member Info</h3>
-    <pre class="result-text">{{ memberInfo | json }}</pre>
+  <!-- Member Info View -->
+  <div *ngIf="memberInfo" class="border rounded p-3">
+
+    <div class="row mb-2">
+      <div class="col-4 fw-bold">Full Name</div>
+      <div class="col-8">{{ memberInfo.fullName }}</div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-4 fw-bold">Mobile</div>
+      <div class="col-8">{{ memberInfo.mobileNumber }}</div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-4 fw-bold">Gender</div>
+      <div class="col-8 text-capitalize">{{ memberInfo.gender }}</div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-4 fw-bold">State / District</div>
+      <div class="col-8">{{ memberInfo.stateDistrict }}</div>
+    </div>
+
+    <!-- Registration Fees Dropdown -->
+    <div class="row mb-2 align-items-center">
+      <div class="col-4 fw-bold">Registration Fees</div>
+      <div class="col-8">
+        <select
+          class="form-select"
+          [(ngModel)]="memberInfo.registrationFees">
+          <option value="paid">Paid</option>
+          <option value="unpaid">Unpaid</option>
+        </select>
+      </div>
+    </div>
+
   </div>
-        </div>
+       </div>
+
         <div class="modal-footer d-flex justify-content-end gap-2">
-            <button class="btn btn-outline-secondary" (click)="showDetailsModal=false">Cancel</button>
-            <button class="btn btn-success" (click)="approve()">
-               Approve
-            </button>
-        </div>
+  <button class="btn btn-outline-secondary" (click)="closeDetailsModal()">
+    Cancel
+  </button>
+
+  <!-- Show Update if unpaid -->
+  <button
+    *ngIf="memberInfo?.registrationFees === 'unpaid'"
+    class="btn btn-warning"
+    (click)="updateFeesStatus()">
+    Update
+  </button>
+
+  <!-- Show Approve if paid -->
+  <button
+    class="btn btn-success"
+    (click)="approve()">
+    Approve
+  </button>
+</div>
+
+        
     </div>
 </div>
 </div>

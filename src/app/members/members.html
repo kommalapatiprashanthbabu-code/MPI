@@ -1,5 +1,5 @@
 <div class="container mt-4">
-    <h1 class="text-center mb-3" style="font-family: auto; color: burlywood;"><b>MPI 2</b><sup>nd</sup> <b> Seminar</b></h1>
+    <h1 class="text-center mb-3" style="font-family: auto; color: burlywood;"><b>WCM MPI 2</b><sup>nd</sup> <b> Seminar</b></h1>
     <div class="d-flex justify-content-between mb-3">
         <input type="text" class="form-control w-25" placeholder="Search by name or mobile" [(ngModel)]="searchText"
             (input)="search()" />
@@ -11,39 +11,65 @@
         </button>
     </div>
 
-    <table class="table table-bordered table-hover">
-        <thead class="table-primary">
-            <tr>
-                <th>Name</th>
-                <th>Mobile</th>
-                <th>Email</th>
-                <th>Gender</th>
-                <th>State / District</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let m of filteredMembers">
-                <td>{{ m.fullName }}</td>
-                <td>{{ m.mobileNumber }}</td>
-                <td>{{ m.email }}</td>
-                <td>{{ m.gender }}</td>
-                <td>{{ m.stateDistrict }}</td>
-                
-                   <td>
-  <button class="btn btn-action btn-edit me-2" (click)="openEditModal(m)">
-    <i class="bi bi-pencil-square"></i>
-  </button>
+<table class="table table-bordered table-hover">
+  <thead class="table-primary">
+    <tr>
+      <th>Full Name</th>
+      <th>Mobile Number</th>
+      <th>Gender</th>
+      <th>State / District</th>
+      <th>Registration Fees</th>
+      <th>Registration Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
 
-  <button class="btn btn-action btn-delete" (click)="deleteMember(m.registrationId)">
-    <i class="bi bi-trash"></i>
-  </button>
+  <tbody>
+    <tr *ngFor="let m of filteredMembers">
+      <td>{{ m.fullName }}</td>
+      <td>{{ m.mobileNumber }}</td>
+      <td>{{ m.gender | titlecase }}</td>
+      <td>{{ m.stateDistrict }}</td>
+
+      <!-- Handle null safely -->
+      <td>
+        {{ m.registrationFees !== null ? m.registrationFees : '—' }}
+      </td>
+
+      <td>
+  <span
+    class="badge"
+    [ngClass]="{
+      'bg-success': m.registrationStatus === 'ACTIVE',
+      'bg-warning': m.registrationStatus === 'NEW_USER',
+      'bg-danger': m.registrationStatus === 'INACTIVE'
+    }">
+    {{ m.registrationStatus }}
+  </span>
 </td>
 
-               
-            </tr>
-        </tbody>
-    </table>
+
+      <td>
+        <button
+          class="btn btn-action btn-edit me-2"
+          (click)="openEditModal(m)">
+          <i class="bi bi-pencil-square"></i>
+        </button>
+        <button
+          class="btn btn-action btn-edit"
+          (click)="approve(m)">
+          <i class="bi bi-check-square-fill" style="color: #00f885de;"></i>
+        </button>
+        <!-- <button
+          class="btn btn-action btn-delete"
+          (click)="deleteMember(m.registrationId)">
+          <i class="bi bi-trash"></i>
+        </button> -->
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 </div>
 
 <!-- FORM MODAL -->

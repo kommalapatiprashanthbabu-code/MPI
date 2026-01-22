@@ -31,5 +31,14 @@ body {
   background-position: center;
   background-size: cover;
 }
+/* Fix Formly label color */
+.form-label {
+  color: #212529 !important; /* Bootstrap default dark */
+}
+
+.form-label span {
+  color: #dc3545;
+}
+
 
 

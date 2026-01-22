@@ -1,0 +1,49 @@
+<div class="container mt-4">
+    <h1 class="text-center mb-3" style="font-family: auto; color: burlywood;"><b>Attended Members</b></h1>
+    <div class="d-flex justify-content-between mb-3">
+        <input type="text" class="form-control w-25" placeholder="Search by name or mobile" [(ngModel)]="searchText"
+            (input)="search()" />
+    </div>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-primary">
+            <tr>
+                <th>Registration ID</th>
+                <th>Full Name</th>
+                <th>Mobile Number</th>
+                <th>Gender</th>
+                <th>State / District</th>
+                <th>Registration Fees</th>
+                <th>Registration Status</th>
+                <th>Attended Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let m of filteredAttendedMembers">
+                <td>{{ m.registrationId }}</td>
+                <td>{{ m.fullName }}</td>
+                <td>{{ m.mobileNumber }}</td>
+                <td>{{ m.gender | titlecase }}</td>
+                <td>{{ m.stateDistrict }}</td>
+
+                <!-- Handle null safely -->
+                <td>
+                    {{ m.registrationFees !== null ? m.registrationFees : '—' }}
+                </td>
+
+                <td>
+                    <span class="badge" [ngClass]="{
+      'bg-success': m.registrationStatus === 'ACTIVE',
+      'bg-warning': m.registrationStatus === 'NEW_USER',
+      'bg-danger': m.registrationStatus === 'INACTIVE'
+    }">
+                        {{ m.registrationStatus }}
+                    </span>
+                </td>
+                <td><span class="badge bg-success">{{m.attendanceStatus}}</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

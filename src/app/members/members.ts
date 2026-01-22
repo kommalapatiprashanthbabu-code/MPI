@@ -1,13 +1,11 @@
-import { Visitor } from '@angular/compiler';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { VisitorService } from './members-service';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { RouterLink } from '@angular/router';
-
-declare var bootstrap: any;
+import { Visitor } from '../interfaces/visitors.model';
 @Component({
   selector: 'app-members',
   imports: [CommonModule,FormsModule,ReactiveFormsModule,FormlyModule,FormlyBootstrapModule,RouterLink],
@@ -30,8 +28,8 @@ fields: FormlyFieldConfig[] = [
         templateOptions: {
           label: 'Full Name',
           required: true,
-          placeholder: 'Enter full name'
-        }
+          placeholder: 'Enter full name',
+        },
       },
       {
         key: 'mobileNumber',
@@ -40,8 +38,8 @@ fields: FormlyFieldConfig[] = [
         templateOptions: {
           label: 'Mobile Number',
           required: true,
-          placeholder: 'Enter mobile number'
-        }
+          placeholder: 'Enter mobile number',
+        },
       },
       {
         key: 'email',
@@ -50,8 +48,9 @@ fields: FormlyFieldConfig[] = [
         templateOptions: {
           label: 'Email',
           type: 'email',
-          placeholder: 'Enter email'
-        }
+          required: true,
+          placeholder: 'Enter email',
+        },
       },
       {
         key: 'gender',
@@ -59,11 +58,35 @@ fields: FormlyFieldConfig[] = [
         className: 'col-md-6',
         templateOptions: {
           label: 'Gender',
+          required: true,
           options: [
-            { label: 'Male', value: 'Male' },
-            { label: 'Female', value: 'Female' }
-          ]
-        }
+            { label: 'Male', value: 'male' },
+            { label: 'Female', value: 'female' },
+          ],
+        },
+      },
+      {
+        key: 'dateOfBirth',
+        type: 'input',
+        className: 'col-md-6',
+        templateOptions: {
+          label: 'Date of Birth',
+          type: 'date',
+          required: true,
+        },
+      },
+      {
+        key: 'maritalStatus',
+        type: 'select',
+        className: 'col-md-6',
+        templateOptions: {
+          label: 'Marital Status',
+          required: true,
+          options: [
+            { label: 'Married', value: 'married' },
+            { label: 'Unmarried', value: 'unmarried' },
+          ],
+        },
       },
       {
         key: 'stateDistrict',
@@ -71,20 +94,57 @@ fields: FormlyFieldConfig[] = [
         className: 'col-md-12',
         templateOptions: {
           label: 'State / District',
-          placeholder: 'Enter state and district'
-        }
-      }
-    ]
-  }
+          required: true,
+          placeholder: 'Enter state and district',
+        },
+      },
+      {
+        key: 'address',
+        type: 'textarea',
+        className: 'col-md-12',
+        templateOptions: {
+          label: 'Address',
+          required: true,
+          placeholder: 'Enter address',
+          rows: 2,
+        },
+      },
+      {
+        key: 'pinCode',
+        type: 'input',
+        className: 'col-md-6',
+        templateOptions: {
+          label: 'Pin Code',
+          required: true,
+          placeholder: 'Enter pin code',
+        },
+      },
+      {
+        key: 'registrationFees',
+        type: 'select',
+        className: 'col-md-6',
+        templateOptions: {
+          label: 'Registration Fees',
+          required: true,
+          options: [
+            { label: 'Paid', value: 'paid' },
+            { label: 'Unpaid', value: 'unpaid' },
+          ],
+        },
+      },
+    ],
+  },
 ];
 
+
+
   isEditMode = false;
-  members:any = [];
-  filteredMembers: any= [];
+members: Visitor[] = [];
+filteredMembers: Visitor[] = [];
   searchText = '';
   showModal: boolean=false;
 
-  constructor(private visitorService: VisitorService) {}
+  constructor(private visitorService: VisitorService,private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
      this.loadVisitors();
@@ -95,20 +155,25 @@ openAddModal() {
     this.form.reset();
     this.showModal =true
   }
-  loadVisitors() {
-    this.visitorService.getVisitors().subscribe(res => {
-      this.members = res;
-      this.filteredMembers = res;
-    });
-  }
 
-  search() {
-    const value = this.searchText.toLowerCase();
-    this.filteredMembers = this.members.filter((m:any) =>
-      m.fullName.toLowerCase().includes(value) ||
-      m.mobileNumber.includes(value)
-    );
-  }
+
+loadVisitors() {
+  this.visitorService.getVisitors().subscribe((res:any) => {
+    this.members = res.content;
+    this.filteredMembers = [...res.content]; // clone to avoid reference 
+     this.cdr.detectChanges();
+  });
+}
+
+
+search() {
+  const value = this.searchText.toLowerCase();
+  this.filteredMembers = this.members.filter(m =>
+    m.fullName.toLowerCase().includes(value) ||
+    m.mobileNumber.includes(value)
+  );
+}
+
 
   addMember() {
     console.log('Add member clicked');
@@ -125,21 +190,24 @@ openAddModal() {
     console.log('Edit', member);
   }
   save() {
-    if (this.form.valid){
-    if (this.isEditMode) {
-      // this.visitorService.updateVisitor(this.model as Visitor)
-      //   .subscribe(() => {
-      //     this.loadVisitors();
-      //     this.closeModal();
-      //   });
-    } else {
-      // this.visitorService.addVisitor(this.model as Visitor)
-      //   .subscribe(() => {
-      //     this.loadVisitors();
-      //     this.closeModal();
-      //   });
-    }
+    if (this.form.invalid) {
+    this.form.markAllAsTouched();
+    return;
   }
+    if (this.isEditMode) {
+      this.visitorService.updateVisitor(this.model)
+        .subscribe(() => {
+          this.loadVisitors();
+           this.showModal=false;
+        });
+    } else {
+      this.visitorService.addVisitor(this.model)
+        .subscribe(() => {
+          this.loadVisitors();
+         this.showModal=false;
+        });
+    }
+  
   }
   deleteMember(id: number) {
     if (confirm('Are you sure you want to delete this member?')) {
@@ -147,5 +215,11 @@ openAddModal() {
         this.loadVisitors();
       });
     }
+  }
+  approve(memberInfo:any){
+     this.visitorService.approveVisitor({qrScanned:false,registrationId:memberInfo.registrationId})
+        .subscribe(() => {
+          this.loadVisitors();
+    });
   }
 }

@@ -1,80 +1,99 @@
-.scanner-page{
-  background-color: radial-gradient(circle at top left, #cfc177, #000000, #cfc177);;
+/* ===========================
+   Scanner Page Background
+=========================== */
+.scanner-page {
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #cfc177, #000000, #cfc177);
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
 }
+
+/* ===========================
+   Scanner Card
+=========================== */
 .scanner-card {
-    max-width: 600px; /* bigger card */
-    margin: 30px auto;
-    padding: 30px;
-    font-family: 'Poppins', sans-serif;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-    text-align: center;
-  }
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  text-align: center;
+}
 
-  .scanner-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-  }
+/* Header with Icon */
+.scanner-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
 
-  .scanner-icon {
-    font-size: 60px; /* bigger icon */
-    color: #0d6efd;
-  }
+.scanner-icon {
+  font-size: 60px;
+  color: #0d6efd;
+}
 
-  .scanner-header h1 {
-    font-size: 32px;
-    font-weight: 600;
-  }
+.scanner-header h1 {
+  font-size: 32px;
+  font-weight: 600;
+}
 
-  .camera-select {
-    margin-bottom: 15px;
-    text-align: left;
-  }
+/* Camera Select Dropdown */
+.camera-select {
+  margin-bottom: 15px;
+  text-align: left;
+}
 
-  .camera-select label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 5px;
-    font-size: 16px;
-  }
+.camera-select label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 5px;
+  font-size: 16px;
+}
 
-  .form-select-lg {
-    font-size: 16px;
-    padding: 10px 12px;
-  }
+.form-select-lg {
+  font-size: 16px;
+  padding: 10px 12px;
+}
 
-  .qr-reader {
-    width: 100%;
-    height: 450px; /* big scanner area */
-    border: 3px dashed #0d6efd;
-    border-radius: 12px;
-  }
+/* QR Reader Box */
+.qr-reader {
+  width: 100%;
+  height: 450px;
+  border: 3px dashed #0d6efd;
+  border-radius: 12px;
+}
 
-  .output {
-    margin-top: 15px;
-    text-align: left;
-    background: #f8f9fa;
-    padding: 16px;
-    border-radius: 12px;
-    border: 1px solid #dee2e6;
-  }
+/* ===========================
+   Output / Member Info
+=========================== */
+.output {
+  margin-top: 15px;
+  text-align: left;
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #dee2e6;
+}
 
-  .output h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    font-weight: 600;
-  }
+.output h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
 
-  .result-text {
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    color: #212529;
-    word-break: break-word;
-  }
-  .modal-backdrop-custom {
+.result-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: #212529;
+  word-break: break-word;
+}
+
+/* ===========================
+   Custom Modal Backdrop
+=========================== */
+.modal-backdrop-custom {
   position: fixed;
   top: 0;
   left: 0;
@@ -87,13 +106,18 @@
   justify-content: center;
 }
 
+/* Custom Modal */
 .modal-custom {
-  background: #fff;
+  background: #ffffff;
+  color: #212529;
   width: 700px;
   border-radius: 6px;
   box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
 }
 
+/* Modal Header & Footer */
 .modal-header,
 .modal-footer {
   padding: 1rem;
@@ -105,8 +129,51 @@
   text-align: right;
 }
 
+/* Modal Body */
 .modal-body {
   padding: 1rem;
   max-height: 70vh;
   overflow-y: auto;
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+/* ===========================
+   Form / View inside Modal
+=========================== */
+.modal-body .row {
+  margin-bottom: 10px;
+}
+
+.modal-body .fw-bold {
+  font-weight: 600;
+}
+
+.modal-body select.form-select {
+  font-size: 15px;
+  padding: 5px 8px;
+}
+
+/* ===========================
+   Buttons
+=========================== */
+.modal-footer .btn {
+  min-width: 100px;
+}
+
+/* Approve / Update button colors */
+.btn-success {
+  background-color: #198754;
+  border-color: #198754;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #212529;
+}
+
+.btn-outline-secondary {
+  color: #6c757d;
+  border-color: #6c757d;
 }

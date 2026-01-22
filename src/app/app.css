@@ -1,122 +1,160 @@
 
 
-        /* --- Header / Branding (User Provided) --- */
-        header {
-            background-color: #000000;
-            color: white;
-            padding: 0.8rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            z-index: 100;
-            flex-shrink: 0;
-            position: sticky;
-            top: 0;
-        }
+  /* Header base */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 24px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(6px);
+}
 
-        .brand-container {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
+/* Brand container */
+.brand-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-        .brand-logo {
-            height: 40px;
-            width: auto;
-            object-fit: contain;
-        }
+/* Glass badge */
+.brand-badge {
+  padding: 3px 10px;
+  border-radius: 14px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.05)
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(212, 175, 55, 0.6); /* gold border */
+  box-shadow:
+    0 0 12px rgba(212, 175, 55, 0.35),
+    inset 0 0 8px rgba(255, 255, 255, 0.2);
+}
 
-        .brand-title {
-            font-family: var(--font-heading);
-            font-size: 0.95rem;
-            font-weight: 500;
-            opacity: 0.95;
-            border-left: 1px solid #444;
-            padding-left: 1.5rem;
-        }
-        
-        .header-right {
-            font-family: var(--font-body);
-            font-size: 0.85rem; 
-            opacity: 0.8;
-            font-weight: 300;
-            text-align: right;
-        }
-        /* Sidebar */
+/* Premium gold text */
+.brand-title {
+font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    padding: 2px 2px;
+    letter-spacing: 0.4px;
+    background: linear-gradient(135deg, #fff8d7, #ffde73, #ffc000);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    white-space: nowrap;
+}
+
+/* Logo */
+.brand-logo {
+  height: 36px;
+}
+
+/* Right text */
+
+
+.header-right {
+font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 5px 5px;
+    border-radius: 23px;
+    border: 1px solid #888888;
+    background: linear-gradient(90deg, #ff8000, #ffffff, #13df00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Toggle icon */
+.toggle-btn {
+font-size: 22px;
+    color: white;
+    cursor: pointer;
+    margin-left: 3px;
+    margin-top: 7px;
+}
+
+/* Sidebar base */
 .side-menu {
   position: fixed;
-  top: 60px; /* adjust if header height changes */
-  left: -220px;
-  width: 220px;
+  top: 60px;
+  left: 0;
+  width: 60px;
   height: calc(100vh - 60px);
   background-color: #000000;
-  transition: left 0.3s ease;
+  transition: width 0.3s ease;
+  overflow: hidden;
   z-index: 1000;
 }
 
-/* Show menu on hover */
-.side-menu:hover {
-  left: 0;
+/* Expanded sidebar */
+.side-menu.expanded {
+  width: 220px;
 }
 
-/* Optional: trigger area */
-.side-menu::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: -20px;
-  width: 20px;
-  height: 100%;
-}
-
-/* Menu items */
+/* Menu list */
 .side-menu ul {
   list-style: none;
-  padding: 16px 0;
+  padding: 12px 0;
   margin: 0;
 }
 
 /* Menu item */
 .side-menu li {
-  margin: 4px 12px;
+  margin: 6px 8px;
   border-radius: 8px;
-  transition: background 0.2s ease;
 }
 
 /* Link */
 .side-menu a {
-  display: block;
-  padding: 12px 16px;
-  color: #e5e7eb;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 8px;
+    color: #e5e7eb;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+/* Icon */
+.side-menu i {
+  font-size: 20px;
+  min-width: 27px;
+  text-align: center;
+}
+
+/* Text hidden by default */
+.side-menu span {
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Show text when expanded */
+.side-menu.expanded span {
+  opacity: 1;
 }
 
 /* Hover */
 .side-menu li:hover {
-  background: #1e293b;
+  background: #555555;
 }
 
-/* Active menu item */
-.side-menu li.active {
-  background: #2563eb; /* blue */
-}
+/* Active item */
 
-/* Active link text */
 .side-menu li.active a {
-  color: #ffffff;
+  color: #eed8a3;
   font-weight: 600;
 }
-
-/* Optional left indicator */
-.side-menu li.active::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  height: 100%;
-  width: 4px;
-  background: #60a5fa;
-  border-radius: 0 4px 4px 0;
+main {
+  margin-left: 70px;
+  transition: margin-left 0.3s ease;
 }
+
+.side-menu.expanded ~ main {
+  margin-left: 220px;
+}
+
+

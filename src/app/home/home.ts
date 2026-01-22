@@ -1,20 +1,30 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import * as htmlToImage from 'html-to-image';
 import QRCodeStyling from 'qr-code-styling';
 @Component({
   selector: 'app-home',
-  imports: [CommonModule,ReactiveFormsModule,FormsModule,RouterLink],
+  imports: [CommonModule,ReactiveFormsModule,FormsModule],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 
 export class Home {
-@ViewChild('qrContainer', { static: true })
-  qrContainer!: ElementRef<HTMLDivElement>;
+@ViewChild('qrContainer') qrContainer!: ElementRef<HTMLDivElement>;
+@ViewChild('downloadWrapper') downloadWrapper!: ElementRef<HTMLDivElement>;
+constructor(private cdr:ChangeDetectorRef){
 
-  qrData = 'Mssion_Peace_India';
+}
+
+  qrPayload = {
+  name: '',
+  serialNo: ''
+};
+displayName = '';
+displaySerialNo = '';
+
   qrGenerated = false;
 
   qrCode = new QRCodeStyling({
@@ -40,28 +50,55 @@ export class Home {
     }
   });
 
-  generateQR() {
-    this.qrGenerated = true;
+generateQR() {
+  if(this.qrPayload.name && this.qrPayload.serialNo){
+  this.qrGenerated = true;
+
+  const payload = {
+    name: this.qrPayload.name,
+    serialNo: this.qrPayload.serialNo
+  };
+
+  this.displayName = payload.name;
+  this.displaySerialNo = payload.serialNo;
+
+  // ⏳ Wait for DOM to render
+  setTimeout(() => {
     this.qrContainer.nativeElement.innerHTML = '';
 
     this.qrCode.update({
-      data: this.qrData
+      data: JSON.stringify(payload)
     });
 
     this.qrCode.append(this.qrContainer.nativeElement);
-  }
-
-  downloadSVG() {
-    this.qrCode.download({
-      name: 'mission-peace-india-qr',
-      extension: 'svg'
+  });
+}
+}
+downloadPNG() {
+  htmlToImage.toPng(this.downloadWrapper.nativeElement,{skipFonts: true,cacheBust: true})
+    .then((dataUrl) => {
+      const link = document.createElement('a');
+      link.download = this.qrPayload.name+'-MPI-entry-pass.png';
+      link.href = dataUrl;
+      link.click();
+      this.resetQR();
     });
-  }
+}
+resetQR() {
+  // Reset model
+  this.qrPayload = {
+    name: '',
+    serialNo: ''
+  };
 
-  downloadPNG() {
-    this.qrCode.download({
-      name: 'mission-peace-india-qr',
-      extension: 'png'
-    });
-  }
+  // Reset display text
+  this.displayName = '';
+  this.displaySerialNo = '';
+
+  // Let Angular destroy the whole block
+  this.qrGenerated = false;
+  this.cdr.detectChanges();
+}
+
+
 }

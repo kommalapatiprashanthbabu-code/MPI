@@ -2,11 +2,13 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Html5Qrcode } from 'html5-qrcode';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { VisitorService } from '../members/members-service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-scanner',
   standalone: true,
-  imports:[CommonModule],
+  imports:[CommonModule,FormsModule,ReactiveFormsModule],
   templateUrl: './scanner.html',
   styleUrls: ['./scanner.css'],
 })
@@ -20,7 +22,7 @@ export class Scanner implements OnInit, OnDestroy {
   memberInfo: any;
   showDetailsModal: boolean =false;
 
-  constructor(private http: HttpClient,private cdr: ChangeDetectorRef) {}
+  constructor(private http: HttpClient,private cdr: ChangeDetectorRef,private visitorService:VisitorService) {}
 
 async ngOnInit() {
   this.html5QrCode = new Html5Qrcode('qr-reader');
@@ -66,12 +68,13 @@ async onCameraChange(event: Event) {
 
 onScanSuccess(text: string) {
   this.scannedResult = text;
-  this.memberInfo = { name: 'John Doe', id: text };
-
+  this.visitorService.getVisitorById(this.scannedResult).subscribe(visitor => {
+  this.memberInfo =visitor;
   this.showDetailsModal = true;
-  this.cdr.detectChanges(); // 👈 force update
-
+  this.cdr.detectChanges();
   this.html5QrCode.stop();
+  });
+
 }
 
 
@@ -90,12 +93,35 @@ private async stopScanner() {
     }
   }
 }
+onQrScanned(scannedValue: string) {
+  scannedValue = scannedValue.trim();
+  console.log(scannedValue)
+  // if (!scannedValue) return;
+
+  // this.scannedResult = scannedValue;
+
+  // this.visitorService.getVisitorById(scannedValue).subscribe(visitor => {
+  //   this.memberInfo = visitor;
+  //   this.showDetailsModal = true;
+  // });
+}
 
   approve(){
-    this.showDetailsModal=false;
+     this.visitorService.approveVisitor({qrScanned:true,registrationId:this.scannedResult})
+        .subscribe(() => {
+             this.showDetailsModal=false;
+            this.startScanner();
+    });
   }
   closeDetailsModal(){
     this.showDetailsModal=false;
     this.startScanner();
+  }
+  updateFeesStatus(){
+     this.visitorService.updateVisitor({registrationId:this.scannedResult,registrationFees:this.memberInfo.registrationFees})
+        .subscribe(() => {
+            //  this.showDetailsModal=false;
+            // this.startScanner();
+    });
   }
 }
