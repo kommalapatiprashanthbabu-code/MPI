@@ -1,40 +1,31 @@
-  <div class="page-bg">
-      <div class="qr-generator glass-card">
-          <h2 class="title">QR Code Generator</h2>
-           <input
-      type="text"
-      [(ngModel)]="qrPayload.name"
-      placeholder="Enter Name"
-      class="qr-input"
-    />
+<div class="page-bg">
+  <div class="qr-generator glass-card">
+    <h2 class="title">QR Code Generator</h2>
+    <input type="text" [(ngModel)]="qrPayload.name" placeholder="Enter Name" class="qr-input" />
 
-    <input
-      type="text"
-      [(ngModel)]="qrPayload.serialNo"
-      placeholder="Enter Serial Number"
-      class="qr-input"
-    />
+    <input type="text" [(ngModel)]="qrPayload.serialNo" placeholder="Enter Serial Number" class="qr-input" />
 
-        <div class="btn-row">
-      <button
-        class="btn btn-gold"
-        (click)="generateQR()"
-        [disabled]="!qrPayload.serialNo || !qrPayload.name"
-      >
+    <div class="btn-row">
+      <button class="btn btn-gold" (click)="generateQR()" [disabled]="!qrPayload.serialNo || !qrPayload.name">
         Generate QR Code
       </button>
 
-      <button
-        class="btn btn-gold"
-        (click)="downloadPNG()"
-        [disabled]="!qrGenerated"
-      >
+      <button class="btn btn-gold" (click)="downloadPNG()" [disabled]="!qrGenerated">
         Download PNG
       </button>
     </div>
-      </div>
   </div>
-  <div #downloadWrapper class="download-wrapper" *ngIf="qrGenerated">
+  <div>
+    <input
+  type="file"
+  accept=".xlsx,.xls"
+  (change)="onExcelUpload($event)"
+  class="qr-input"
+/>
+
+  </div>
+</div>
+<div #downloadWrapper class="download-wrapper" *ngIf="qrGenerated">
 
   <div class="entry-text">
     <h1>Entry Pass</h1>

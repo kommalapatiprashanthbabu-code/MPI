@@ -1,47 +1,41 @@
 <div class="scanner-page">
-
-  <div class="scanner-card">
+  <div class="scanner-card glass">
     <div class="scanner-header">
-      <i class="bi bi-qr-code-scan scanner-icon"></i>
-      <h1 style="color: black;">Scan QR Code</h1>
-    </div>
-<input
-  #qrInput
-  type="text"
-  class="form-control"
-  placeholder="Scan QR Code"
-  autofocus
-  (keydown.enter)="onQrScanned(qrInput.value); qrInput.value='';"
-/>
-
-    <!-- Camera Selector -->
-    <div class="camera-select" *ngIf="cameras.length > 0">
-      <label for="camera" style="color: black;">Select Camera:</label>
-      <select id="camera" class="form-select form-select-lg" (change)="onCameraChange($event)">
-        <option *ngFor="let cam of cameras" [value]="cam.id">
-          {{ cam.label }}
-        </option>
-      </select>
+      <div class="scanner-icon-wrap">
+        <i class="bi bi-qr-code-scan"></i>
+      </div>
+      <div>
+        <h1>QR Scanner</h1>
+        <p class="subtitle">Scan visitor QR code to verify & approve</p>
+      </div>
     </div>
 
-    <!-- QR Reader -->
-    <div id="qr-reader" class="qr-reader"></div>
+    <div class="scan-input-wrapper">
+      <input
+        #qrInput
+        type="text"
+        class="scan-input"
+        placeholder="Scan QR code here..."
+        autofocus
+        (keydown.enter)="onQrScanned(qrInput.value); qrInput.value='';"
+      />
+      <span class="scan-hint">📷 Waiting for scan…</span>
+    </div>
   </div>
 
 <div *ngIf="showDetailsModal" class="modal-backdrop-custom">
     <div class="modal-custom">
-        <div class="modal-header bg-primary text-white">
+        <div class="modal-header text-black">
             <h5 class="mb-0">
                Details
             </h5>
-            <button class="btn-close btn-close-white" (click)="closeDetailsModal()"></button>
+            <button class="btn-close btn-close-black" (click)="closeDetailsModal()"></button>
         </div>
        <div class="modal-body">
 
   <!-- Scanned Result -->
   <div class="mb-3">
-    <strong>Scanned UID:</strong>
-    <div class="text-primary">{{ scannedResult }}</div>
+    <div><strong>Scanned UID : </strong><span class="text-primary"><b>{{ scannedResult.serialNo }}</b> </span></div>
   </div>
 
   <!-- Member Info View -->
@@ -84,13 +78,12 @@
        </div>
 
         <div class="modal-footer d-flex justify-content-end gap-2">
-  <button class="btn btn-outline-secondary" (click)="closeDetailsModal()">
-    Cancel
+  <button class="btn btn-danger" (click)="closeDetailsModal()">
+    Close
   </button>
 
   <!-- Show Update if unpaid -->
   <button
-    *ngIf="memberInfo?.registrationFees === 'unpaid'"
     class="btn btn-warning"
     (click)="updateFeesStatus()">
     Update

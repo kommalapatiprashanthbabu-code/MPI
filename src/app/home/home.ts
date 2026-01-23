@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import * as htmlToImage from 'html-to-image';
 import QRCodeStyling from 'qr-code-styling';
+import * as XLSX from 'xlsx';
+
 @Component({
   selector: 'app-home',
   imports: [CommonModule,ReactiveFormsModule,FormsModule],
@@ -12,8 +13,12 @@ import QRCodeStyling from 'qr-code-styling';
 })
 
 export class Home {
-@ViewChild('qrContainer') qrContainer!: ElementRef<HTMLDivElement>;
-@ViewChild('downloadWrapper') downloadWrapper!: ElementRef<HTMLDivElement>;
+@ViewChild('qrContainer', { static: false })
+qrContainer!: ElementRef<HTMLDivElement>;
+
+@ViewChild('downloadWrapper', { static: false })
+downloadWrapper!: ElementRef<HTMLDivElement>;
+
 constructor(private cdr:ChangeDetectorRef){
 
 }
@@ -61,7 +66,8 @@ generateQR() {
 
   this.displayName = payload.name;
   this.displaySerialNo = payload.serialNo;
-
+ // 🔑 Force view update
+    this.cdr.detectChanges();
   // ⏳ Wait for DOM to render
   setTimeout(() => {
     this.qrContainer.nativeElement.innerHTML = '';
@@ -71,7 +77,7 @@ generateQR() {
     });
 
     this.qrCode.append(this.qrContainer.nativeElement);
-  });
+  },100);
 }
 }
 downloadPNG() {
@@ -100,5 +106,57 @@ resetQR() {
   this.cdr.detectChanges();
 }
 
+async onExcelUpload(event: any) {
+  debugger
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const data = await file.arrayBuffer();
+  const workbook = XLSX.read(data);
+  const sheetName = workbook.SheetNames[0];
+  const sheet = workbook.Sheets[sheetName];
+
+  const rows: any[] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+  // Remove header row (if exists)
+  const members = rows.slice(1).filter(r => r[0] && r[1]);
+
+  for (const row of members) {
+    const serialNo = String(row[0]).trim();
+    const name = String(row[1]).trim();
+
+    await this.generateAndDownloadFromExcel(name, serialNo);
+  }
+
+  // reset file input
+  event.target.value = '';
+}
+generateAndDownloadFromExcel(name: string, serialNo: string): Promise<void> {
+  return new Promise((resolve) => {
+
+    // reuse existing payload logic
+    this.qrPayload.name = name;
+    this.qrPayload.serialNo = serialNo;
+
+    this.generateQR();
+
+    setTimeout(() => {
+      htmlToImage
+        .toPng(this.downloadWrapper.nativeElement, {
+          skipFonts: true,
+          cacheBust: true
+        })
+        .then((dataUrl) => {
+          const link = document.createElement('a');
+          link.download = `${name}-MPI-entry-pass.png`;
+          link.href = dataUrl;
+          link.click();
+
+          this.resetQR();
+          resolve();
+        });
+    }, 600); // wait for QR render
+  });
+}
 
 }

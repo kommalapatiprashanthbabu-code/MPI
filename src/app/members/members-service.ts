@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { PageResponse, Visitor } from '../interfaces/visitors.model';
 import { ToastrService } from 'ngx-toastr';
 
@@ -31,22 +31,43 @@ export class VisitorService {
   }
 
   /** Delete a visitor */
-  deleteVisitor(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`)
-      .pipe(catchError(err => this.handleError(err)));
-  }
+deleteVisitor(id: number): Observable<any> {
+  return this.http.delete<any>(`${this.baseUrl}/${id}`).pipe(
+    tap(res => {
+      if (res?.message) {
+        this.toastr.success(res.message, 'Success');
+      }
+    }),
+    catchError(err => this.handleError(err))
+  );
+}
+
 
   /** Add visitor */
-  addVisitor(visitor: any): Observable<any> {
-    return this.http.post<any>('http://localhost:8080/api/users', visitor)
-      .pipe(catchError(err => this.handleError(err)));
-  }
+addVisitor(visitor: any): Observable<any> {
+  return this.http.post<any>('http://localhost:8080/api/users', visitor).pipe(
+    tap(res => {
+      if (res?.message) {
+        this.toastr.success(res.message, 'Success');
+      }
+    }),
+    catchError(err => this.handleError(err))
+  );
+}
+
 
   /** Update visitor */
-  updateVisitor(visitor: any): Observable<any> {
-    return this.http.patch<any>('http://localhost:8080/api/users/update-user', visitor)
-      .pipe(catchError(err => this.handleError(err)));
-  }
+updateVisitor(visitor: any): Observable<any> {
+  return this.http.patch<any>('http://localhost:8080/api/users/update-user', visitor).pipe(
+    tap(res => {
+      if (res?.message) {
+        this.toastr.success(res.message, 'Success');
+      }
+    }),
+    catchError(err => this.handleError(err))
+  );
+}
+
 
   /** Get visitor by registrationId */
   getVisitorById(registrationId: string): Observable<Visitor> {
@@ -55,10 +76,17 @@ export class VisitorService {
   }
 
   /** Approve visitor */
-  approveVisitor(req: any): Observable<any> {
-    return this.http.post<any>('http://localhost:8080/api/users-attendance', req)
-      .pipe(catchError(err => this.handleError(err)));
-  }
+approveVisitor(req: any): Observable<any> {
+  return this.http.post<any>('http://localhost:8080/api/users-attendance', req).pipe(
+    tap(res => {
+      if (res?.message) {
+        this.toastr.success(res.message, 'Success');
+      }
+    }),
+    catchError(err => this.handleError(err))
+  );
+}
+
 
   /** Centralized error handler + Toastr */
   private handleError(error: HttpErrorResponse): Observable<never> {
