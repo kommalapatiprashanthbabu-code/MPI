@@ -2,6 +2,7 @@ import { Component, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/co
 import { CommonModule } from '@angular/common';
 import { VisitorService } from '../members/members-service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-scanner',
@@ -16,7 +17,7 @@ export class Scanner {
   memberInfo: any;
   showDetailsModal: boolean = false;
 
-  constructor(private cdr: ChangeDetectorRef, private visitorService: VisitorService) { }
+  constructor(private toastr: ToastrService,private cdr: ChangeDetectorRef, private visitorService: VisitorService) { }
 
   ngOnInit() {
      setTimeout(() => {
@@ -27,7 +28,7 @@ export class Scanner {
   onQrScanned(scannedValue: string) {
     const result = JSON.parse(scannedValue);
     this.scannedResult = result;
-    this.visitorService.getVisitorById(this.scannedResult.serialNo).subscribe(visitor => {
+    this.visitorService.getVisitorById(this.scannedResult.scannerId).subscribe(visitor => {
       this.memberInfo = visitor;
       this.showDetailsModal = true;
       this.cdr.detectChanges();
@@ -35,8 +36,9 @@ export class Scanner {
   }
 
   approve() {
-    this.visitorService.approveVisitor({ qrScanned: true, registrationId: this.scannedResult.serialNo })
+    this.visitorService.approveVisitor(this.scannedResult.scannerId)
       .subscribe(() => {
+         this.toastr.success('Approved Successfully', 'Success');
         this.closeDetailsModal();
       });
   }
@@ -45,9 +47,10 @@ export class Scanner {
      setTimeout(() => {
         this.qrInput.nativeElement.focus();
       }, 0);
+      this.cdr.detectChanges();
   }
   updateFeesStatus() {
-    this.visitorService.updateVisitor({ registrationId: this.scannedResult.serialNo, registrationFees: this.memberInfo.registrationFees })
+    this.visitorService.updateVisitor({ scannerId: this.scannedResult.scannerId, registrationFees: this.memberInfo.registrationFees })
       .subscribe(() => {
         //  this.showDetailsModal=false;
         // this.startScanner();

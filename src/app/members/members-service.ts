@@ -45,7 +45,7 @@ deleteVisitor(id: number): Observable<any> {
 
   /** Add visitor */
 addVisitor(visitor: any): Observable<any> {
-  return this.http.post<any>('http://localhost:8080/api/users', visitor).pipe(
+  return this.http.post<any>('http://localhost:8080/api/users/create', visitor).pipe(
     tap(res => {
       if (res?.message) {
         this.toastr.success(res.message, 'Success');
@@ -77,8 +77,8 @@ updateVisitor(visitor: any): Observable<any> {
 
   /** Approve visitor */
 approveVisitor(req: any): Observable<any> {
-  return this.http.post<any>('http://localhost:8080/api/users-attendance', req).pipe(
-    tap(res => {
+  return this.http.get<any>('http://localhost:8080/api/users/attendance/'+ req).pipe(
+    tap((res:any) => {
       if (res?.message) {
         this.toastr.success(res.message, 'Success');
       }

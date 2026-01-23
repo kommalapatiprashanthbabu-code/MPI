@@ -8,24 +8,21 @@
     <table class="table table-bordered table-hover">
         <thead class="table-primary">
             <tr>
-                <th>Registration ID</th>
+                <th>Scanner Id</th>
                 <th>Full Name</th>
                 <th>Mobile Number</th>
-                <th>Gender</th>
-                <th>State / District</th>
+                <th>Email</th>
                 <th>Registration Fees</th>
-                <th>Registration Status</th>
-                <th>Attended Status</th>
+                <th>Attendance Status</th>
             </tr>
         </thead>
 
         <tbody>
             <tr *ngFor="let m of filteredAttendedMembers">
-                <td>{{ m.registrationId }}</td>
+                <td>{{ m.scannerId }}</td>
                 <td>{{ m.fullName }}</td>
                 <td>{{ m.mobileNumber }}</td>
-                <td>{{ m.gender | titlecase }}</td>
-                <td>{{ m.stateDistrict }}</td>
+                <td>{{ m.email }}</td>
 
                 <!-- Handle null safely -->
                 <td>
@@ -34,14 +31,13 @@
 
                 <td>
                     <span class="badge" [ngClass]="{
-      'bg-success': m.registrationStatus === 'ACTIVE',
-      'bg-warning': m.registrationStatus === 'NEW_USER',
-      'bg-danger': m.registrationStatus === 'INACTIVE'
+      'bg-success': m.attendanceStatus === 'ATTENDED',
+      'bg-warning': m.attendanceStatus === 'NEW_USER',
+      'bg-danger': m.attendanceStatus === 'INACTIVE'
     }">
-                        {{ m.registrationStatus }}
+                        {{ m.attendanceStatus }}
                     </span>
                 </td>
-                <td><span class="badge bg-success">{{m.attendanceStatus}}</span></td>
             </tr>
         </tbody>
     </table>

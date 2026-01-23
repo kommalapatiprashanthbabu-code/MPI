@@ -27,6 +27,8 @@
   font-size: 22px;
   font-weight: 600;
   margin-bottom: 20px;
+  text-shadow:
+  0 0 5px rgb(215 171 29 / 80%), 0 0 10px rgb(255 223 73 / 60%), 0 0 20px rgb(255 219 103 / 40%)
 }
 .entry-text h1 {
 margin: 0;
@@ -116,6 +118,20 @@ margin: 0;
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+.excel-block{
+  border: 1px solid burlywood;
+    border-radius: 10px;
+    padding: 10px;
+}
+.glow-label {
+  color: #ffffff;
+  font-weight: 600;
+
+  text-shadow:
+    0 0 5px rgba(29, 215, 91, 0.8),
+    0 0 10px rgba(29, 215, 91, 0.6),
+    0 0 20px rgba(29, 215, 91, 0.4);
 }
 
 

@@ -1,33 +1,83 @@
+/* Glass Table Base */
 .table {
-  background: rgba(255, 255, 255, 0.15) !important;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 12px;
   overflow: hidden;
+  margin-bottom: 0;
 }
 
-/* Header */
-.table thead th {
-  background:rgb(255 172 0 / 40%) !important;
-  color: #ffffff;
+/* Scroll Only tbody */
+.table-scroll {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-scroll thead {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.table-scroll tbody {
+  display: block;
+  max-height: 60vh; /* responsive height */
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+}
+
+/* Keep header & rows aligned */
+.table-scroll tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* Sticky Header */
+.table-scroll thead th {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: rgba(255, 172, 0, 0.45) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(6px);
 }
 
 /* Cells */
 .table td {
   background: transparent !important;
-  color: rgba(255, 255, 255, 0.9) !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  vertical-align: middle;
 }
 
 /* Hover */
 .table-hover tbody tr:hover {
   background: rgba(255, 255, 255, 0.18) !important;
+  transition: 0.2s ease-in-out;
 }
 
 /* Borders */
 .table-bordered th,
 .table-bordered td {
-  border-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.2) !important;
 }
+
+/* Scrollbar (Chrome) */
+.table-scroll tbody::-webkit-scrollbar {
+  width: 6px;
+}
+
+.table-scroll tbody::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+}
+
+.table-scroll tbody::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 
 .modal-backdrop-custom {
   position: fixed;

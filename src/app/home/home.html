@@ -3,10 +3,10 @@
     <h2 class="title">QR Code Generator</h2>
     <input type="text" [(ngModel)]="qrPayload.name" placeholder="Enter Name" class="qr-input" />
 
-    <input type="text" [(ngModel)]="qrPayload.serialNo" placeholder="Enter Serial Number" class="qr-input" />
+    <input type="text" [(ngModel)]="qrPayload.scannerId" placeholder="Enter Serial Number" class="qr-input" />
 
     <div class="btn-row">
-      <button class="btn btn-gold" (click)="generateQR()" [disabled]="!qrPayload.serialNo || !qrPayload.name">
+      <button class="btn btn-gold" (click)="generateQR()" [disabled]="!qrPayload.scannerId || !qrPayload.name">
         Generate QR Code
       </button>
 
@@ -14,15 +14,15 @@
         Download PNG
       </button>
     </div>
-  </div>
-  <div>
+      <div class="excel-block mt-2">
+        <label class="glow-label">Upload XLSX</label>
     <input
   type="file"
   accept=".xlsx,.xls"
   (change)="onExcelUpload($event)"
-  class="qr-input"
+  class="qr-input bg-success"
 />
-
+  </div>
   </div>
 </div>
 <div #downloadWrapper class="download-wrapper" *ngIf="qrGenerated">
@@ -30,7 +30,7 @@
   <div class="entry-text">
     <h1>Entry Pass</h1>
     <p>Name: {{ displayName }}</p>
-    <p>Serial No: {{ displaySerialNo }}</p>
+    <p>Scanner Id: {{ displayScannerId }}</p>
   </div>
 
   <div #qrContainer></div>

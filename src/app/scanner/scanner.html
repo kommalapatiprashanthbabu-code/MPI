@@ -35,7 +35,7 @@
 
   <!-- Scanned Result -->
   <div class="mb-3">
-    <div><strong>Scanned UID : </strong><span class="text-primary"><b>{{ scannedResult.serialNo }}</b> </span></div>
+    <div><strong>Scanned UID : </strong><span class="text-primary"><b>{{ scannedResult.scannerId }}</b> </span></div>
   </div>
 
   <!-- Member Info View -->
@@ -52,13 +52,8 @@
     </div>
 
     <div class="row mb-2">
-      <div class="col-4 fw-bold">Gender</div>
-      <div class="col-8 text-capitalize">{{ memberInfo.gender }}</div>
-    </div>
-
-    <div class="row mb-2">
-      <div class="col-4 fw-bold">State / District</div>
-      <div class="col-8">{{ memberInfo.stateDistrict }}</div>
+      <div class="col-4 fw-bold">Gmail</div>
+      <div class="col-8 text-capitalize">{{ memberInfo.email }}</div>
     </div>
 
     <!-- Registration Fees Dropdown -->
@@ -68,8 +63,8 @@
         <select
           class="form-select"
           [(ngModel)]="memberInfo.registrationFees">
-          <option value="paid">Paid</option>
-          <option value="unpaid">Unpaid</option>
+          <option value="PAID">PAID</option>
+          <option value="UNPAID">UNPAID</option>
         </select>
       </div>
     </div>

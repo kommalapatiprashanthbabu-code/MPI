@@ -25,10 +25,10 @@ constructor(private cdr:ChangeDetectorRef){
 
   qrPayload = {
   name: '',
-  serialNo: ''
+  scannerId: ''
 };
 displayName = '';
-displaySerialNo = '';
+displayScannerId = '';
 
   qrGenerated = false;
 
@@ -56,16 +56,16 @@ displaySerialNo = '';
   });
 
 generateQR() {
-  if(this.qrPayload.name && this.qrPayload.serialNo){
+  if(this.qrPayload.name && this.qrPayload.scannerId){
   this.qrGenerated = true;
 
   const payload = {
     name: this.qrPayload.name,
-    serialNo: this.qrPayload.serialNo
+    scannerId: this.qrPayload.scannerId
   };
 
   this.displayName = payload.name;
-  this.displaySerialNo = payload.serialNo;
+  this.displayScannerId = payload.scannerId;
  // 🔑 Force view update
     this.cdr.detectChanges();
   // ⏳ Wait for DOM to render
@@ -94,12 +94,12 @@ resetQR() {
   // Reset model
   this.qrPayload = {
     name: '',
-    serialNo: ''
+    scannerId: ''
   };
 
   // Reset display text
   this.displayName = '';
-  this.displaySerialNo = '';
+  this.displayScannerId = '';
 
   // Let Angular destroy the whole block
   this.qrGenerated = false;
@@ -107,7 +107,6 @@ resetQR() {
 }
 
 async onExcelUpload(event: any) {
-  debugger
   const file = event.target.files[0];
   if (!file) return;
 
@@ -136,7 +135,7 @@ generateAndDownloadFromExcel(name: string, serialNo: string): Promise<void> {
 
     // reuse existing payload logic
     this.qrPayload.name = name;
-    this.qrPayload.serialNo = serialNo;
+    this.qrPayload.scannerId = serialNo;
 
     this.generateQR();
 
