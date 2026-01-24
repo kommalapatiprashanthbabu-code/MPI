@@ -4,7 +4,7 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 12px;
-  overflow: visible;
+  overflow: hidden;
   margin-bottom: 0;
 }
 
@@ -13,12 +13,7 @@
   width: 100%;
   border-collapse: collapse;
 }
-.dropdown-item{
-  cursor: pointer;
-}
-.refresh-btn{
-  background-color: (255, 255, 255, 0.2) !important
-}
+
 .table-scroll thead {
   display: table;
   width: 100%;
@@ -27,9 +22,10 @@
 
 .table-scroll tbody {
   display: block;
-  max-height: 60vh;
+  max-height: 60vh; /* responsive height */
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-width: thin;
 }
 
 /* Keep header & rows aligned */
@@ -47,23 +43,6 @@
   background: rgba(255, 172, 0, 0.45) !important;
   color: #ffffff !important;
   backdrop-filter: blur(6px);
-}
-.table-scroll thead {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-}
-
-.table-scroll tbody tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-}
-
-/* 👇 This is the fix */
-.table-scroll thead tr {
-  display: table;
-  width: calc(100% - 5px); /* Adjust if needed */
 }
 
 /* Cells */

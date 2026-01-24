@@ -2,110 +2,68 @@
   <h1 class="text-center mb-3" style="font-family: auto; color: burlywood;"><b>WCM MPI 2</b><sup>nd</sup> <b>
       Seminar</b></h1>
   <div class="d-flex justify-content-between mb-3">
-    <input type="text" class="form-control w-25" placeholder="Search by name / number / scannerId"
-      [(ngModel)]="searchText" (input)="search()" />
-
-    <button class="btn btn-dark b-1" style="margin-left: 600px;border: 1px solid white;" [routerLink]="['/scan']"
+    <input type="text" class="form-control w-25" placeholder="Search by name / number / scannerId" [(ngModel)]="searchText"
+      (input)="search()" />
+    <button class="btn btn-success" style="margin-left: 710px;" [routerLink]="['/scan']"
       routerLinkActive="router-link-active">
       Scanner <i class="bi bi-upc-scan"></i>
     </button>
-    <button class="btn btn-dark" style="border: 1px solid white;" (click)="loadVisitors()"
-      routerLinkActive="router-link-active">
-      Refresh <i class="bi bi-arrow-clockwise"></i>
-    </button>
-    <button class="btn btn-success" (click)="openAddModal()">
+    <button class="btn btn-dark" (click)="openAddModal()">
       + Add Member
     </button>
   </div>
-  <div class="table-wrapper">
-    <table class="table table-bordered table-hover table-scroll">
-      <thead class="table-primary">
-        <tr>
-          <th width="10%" (click)="sortByScannerId()" style="cursor:pointer;">
-            Scanner Id
-            <i class="bi" [ngClass]="{
-       'bi-arrow-up': sortDirection === 'asc',
-       'bi-arrow-down': sortDirection === 'desc'
-     }">
-            </i>
-          </th>
-          <th width="25%">Full Name</th>
-          <th width="10%">Mobile No</th>
-          <th width="25%">Email</th>
-          <th width="10%">Reg Fees</th>
-          <th width="10%" class="position-relative">
-            <div class="d-flex align-items-center justify-content-between">
-              <span>Status</span>
+<div class="table-wrapper">
+  <table class="table table-bordered table-hover table-scroll">
+    <thead class="table-primary">
+      <tr>
+        <th width="10%">Scanner Id</th>
+        <th width="25%">Full Name</th>
+        <th width="10%">Mobile No</th>
+        <th width="25%">Email</th>
+        <th width="10%">Reg Fees</th>
+        <th width="10%">Attend Status</th>
+        <th width="10%">Action</th>
+      </tr>
+    </thead>
 
-              <div class="dropdown">
-                <i class="bi bi-three-dots-vertical" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                  style="cursor: pointer;">
-                </i>
+    <tbody>
+      <tr *ngFor="let m of filteredMembers">
+        <td width="10%">{{ m.scannerId }}</td>
+        <td width="25%">{{ m.fullName }}</td>
+        <td width="10%">{{ m.mobileNumber }}</td>
+        <td width="25%">{{ m.email }}</td>
 
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li>
-                    <a class="dropdown-item" (click)="filterByStatus('ALL')">
-                      All
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" (click)="filterByStatus('ATTENDED')">
-                      Attended
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" (click)="filterByStatus('NOT ATTENDED')">
-                      Not Attended
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </th>
+        <!-- Handle null safely -->
+        <td width="10%">
+          {{ m.registrationFees !== null ? m.registrationFees : '—' }}
+        </td>
 
-          <th width="10%">Action</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngFor="let m of filteredMembers">
-          <td width="10%">{{ m.scannerId }}</td>
-          <td width="25%">{{ m.fullName }}</td>
-          <td width="10%">{{ m.mobileNumber }}</td>
-          <td width="25%">{{ m.email }}</td>
-
-          <!-- Handle null safely -->
-          <td width="10%">
-            {{ m.registrationFees !== null ? m.registrationFees : '—' }}
-          </td>
-
-          <td width="10%">
-            <span class="badge" [ngClass]="{
+        <td width="10%">
+          <span class="badge" [ngClass]="{
     'bg-success': m.attendanceStatus === 'ATTENDED',
     'bg-danger': !m.attendanceStatus || m.attendanceStatus === 'NOT ATTENDED'
   }">
-              {{ m.attendanceStatus || 'NOT ATTENDED' }}
-            </span>
-          </td>
-          <td width="10%">
-            <button class="btn btn-action btn-edit me-2" (click)="openEditModal(m)">
-              <i class="bi bi-pencil-square"></i>
-            </button>
-            <button *ngIf="!m.attendanceStatus || m.attendanceStatus != 'ATTENDED'" class="btn btn-action btn-edit"
-              (click)="approve(m)">
-              <i class="bi bi-check-square-fill" style="color: #00f885de;"></i>
-            </button>
-            <!-- <button
+            {{ m.attendanceStatus || 'NOT ATTENDED' }}
+          </span>
+        </td>
+        <td width="10%">
+          <button class="btn btn-action btn-edit me-2" (click)="openEditModal(m)">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button *ngIf="!m.attendanceStatus || m.attendanceStatus != 'ATTENDED'" class="btn btn-action btn-edit"
+            (click)="approve(m)">
+            <i class="bi bi-check-square-fill" style="color: #00f885de;"></i>
+          </button>
+          <!-- <button
           class="btn btn-action btn-delete"
           (click)="deleteMember(m.registrationId)">
           <i class="bi bi-trash"></i>
         </button> -->
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div style="float: right;">Total : {{members.length}} / Attended : {{attendedMemCount}} / Not Attended : {{notAttendedMemCount}}</div>
-  </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 </div>
 
 <!-- FORM MODAL -->

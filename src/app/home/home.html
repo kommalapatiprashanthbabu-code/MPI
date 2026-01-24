@@ -14,10 +14,15 @@
         Download PNG
       </button>
     </div>
-    <div class="excel-block mt-2">
-      <label class="glow-label">Upload File</label>
-      <input type="file" accept=".xlsx,.xls" (change)="onExcelUpload($event)" class="qr-input" />
-    </div>
+      <div class="excel-block mt-2">
+        <label class="glow-label">Upload XLSX</label>
+    <input
+  type="file"
+  accept=".xlsx,.xls"
+  (change)="onExcelUpload($event)"
+  class="qr-input bg-success"
+/>
+  </div>
   </div>
 </div>
 <div #downloadWrapper class="download-wrapper" *ngIf="qrGenerated">

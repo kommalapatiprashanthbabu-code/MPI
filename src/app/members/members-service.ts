@@ -80,7 +80,7 @@ approveVisitor(req: any): Observable<any> {
   return this.http.get<any>('http://localhost:8080/api/users/attendance/'+ req).pipe(
     tap((res:any) => {
       if (res?.message) {
-        this.toastr.success('Attendance Marked Successfully', 'Success');
+        this.toastr.success(res.message, 'Success');
       }
     }),
     catchError(err => this.handleError(err))

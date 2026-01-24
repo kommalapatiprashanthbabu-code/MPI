@@ -67,13 +67,14 @@ margin: 0;
 
 /* Inputs */
 .qr-input {
-width: 100%;
-    padding: 10px 12px;
-    margin-bottom: 12px;
-    border-radius: 6px;
-    border: 1px solid white;
-    outline: none;
-    font-size: 14px;
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.9);
 }
 
 /* Buttons */
@@ -126,6 +127,11 @@ width: 100%;
 .glow-label {
   color: #ffffff;
   font-weight: 600;
+
+  text-shadow:
+    0 0 5px rgba(29, 215, 91, 0.8),
+    0 0 10px rgba(29, 215, 91, 0.6),
+    0 0 20px rgba(29, 215, 91, 0.4);
 }
 
 
