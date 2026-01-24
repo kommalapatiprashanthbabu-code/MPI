@@ -102,6 +102,11 @@
         </button> -->
           </td>
         </tr>
+        <tr *ngIf="filteredMembers.length === 0">
+    <td colspan="7" class="text-center text-muted py-3">
+      No Records Found
+    </td>
+  </tr>
       </tbody>
     </table>
     <div style="float: right;">Total : {{members.length}} / Attended : {{attendedMemCount}} / Not Attended : {{notAttendedMemCount}}</div>

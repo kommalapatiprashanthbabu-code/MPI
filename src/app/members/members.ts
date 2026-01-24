@@ -239,7 +239,7 @@ export class Members implements OnInit {
   search() {
     const value = this.searchText.toLowerCase();
     this.filteredMembers = this.members.filter(m =>
-      m.fullName.toLowerCase().includes(value) || m.fullName.toLowerCase().includes(value) || m.scannerId.toLowerCase().includes(value) || m.mobileNumber.includes(value)
+       m.fullName.toLowerCase().includes(value) || m.scannerId.toLowerCase().includes(value) || m.mobileNumber.includes(value)
     );
   }
 
